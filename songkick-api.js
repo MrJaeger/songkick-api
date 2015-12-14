@@ -116,7 +116,7 @@ SongKick.prototype.searchArtists = function(params) {
 SongKick.prototype.getSimilarArtists = function(artistId) {
     var endPoint = '/artists/' + artistId + 'similar_artists';
     var url = buildUrl(endPoint, '');
-    return makeRequest(url, 'venue');
+    return makeRequest(url, 'artist');
 };
 
 /*
@@ -189,7 +189,7 @@ SongKick.prototype.searchVenues = function(params) {
 };
 
 /*
-    Returns a venue given an venueId
+    Returns a venue given a venueId
     @venueId: the id of a venue you want details for
 */
 SongKick.prototype.getVenue = function(venueId) {
@@ -266,7 +266,7 @@ SongKick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
 };
 
 /*
-    Returns upcoming events for a user
+    Returns a list of calendar entries with events for a user’s tracked artists in their tracked metro areas.
     @username: the username of a user you want to get upcoming events for
     @params:
         Required: N/A
@@ -300,7 +300,6 @@ SongKick.prototype.getUserCalendar = function(username, params) {
             @per_page: number of results for paginated results (max 50)
 */
 SongKick.prototype.getUserEvents = function(username, params) {
-    params.reason = 'tracked_artist'
     var endPoint = '/users/' + username + '/events';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
