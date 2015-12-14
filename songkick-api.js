@@ -16,7 +16,7 @@ function makeRequest(url, resultType) {
     return deferred.promise;
 }
 
-var SongKick = function(apiKey, opts) {
+var Songkick = function(apiKey, opts) {
     this.apiKey = apiKey;
     this.returnType = '.json';
     if (opts.returnXML) {
@@ -24,7 +24,7 @@ var SongKick = function(apiKey, opts) {
     }
 };
 
-SongKick.prototype.buildUrl = (endPoint, queryString) {
+Songkick.prototype.buildUrl = (endPoint, queryString) {
     return baseUrl + endPoint + this.returnType + '?' + queryString + '&apikey=' + this.apiKey;
 }
 
@@ -45,7 +45,7 @@ SongKick.prototype.buildUrl = (endPoint, queryString) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.searchEvents = function(params) {
+Songkick.prototype.searchEvents = function(params) {
     if (!(params.location || params.artist_name)) {
         throw '{location} OR {artist_name} must be include in the parameters you pass in';
     }
@@ -62,7 +62,7 @@ SongKick.prototype.searchEvents = function(params) {
     Returns an event given an eventId
     @eventId: the id of an event you want details for
 */
-SongKick.prototype.getEvent = function(eventId) {
+Songkick.prototype.getEvent = function(eventId) {
     var endPoint = '/events/' + eventId;
     var url = buildUrl(endPoint, '');
     return makeRequest(url, 'event');
@@ -72,7 +72,7 @@ SongKick.prototype.getEvent = function(eventId) {
     Returns an event's setlist
     @eventId: the id of an event you want its setlist for
 */
-SongKick.prototype.getEventSetlist = function(eventId) {
+Songkick.prototype.getEventSetlist = function(eventId) {
     var endPoint = '/events/' + eventId + '/setlists';
     var url = buildUrl(endPoint, '');
     return makeRequest(url, 'setlist');
@@ -83,7 +83,7 @@ SongKick.prototype.getEventSetlist = function(eventId) {
     @username: the username of the user you want to get a tracking of an event for
     @eventId: the id of the event you want to get a user's tracking for
 */
-SongKick.prototype.getEventTracking = function(username, eventId) {
+Songkick.prototype.getEventTracking = function(username, eventId) {
     var endPoint = '/users/' + username + '/trackings/event:' + eventId;
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -99,7 +99,7 @@ SongKick.prototype.getEventTracking = function(username, eventId) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.searchArtists = function(params) {
+Songkick.prototype.searchArtists = function(params) {
     if (!params.query) {
         throw '{query} must be include in the parameters you pass in';
     }
@@ -113,7 +113,7 @@ SongKick.prototype.searchArtists = function(params) {
     Returns a list of artists similar to a given artist
     @artistId: the id of an artist you want to find similar artists for
 */
-SongKick.prototype.getSimilarArtists = function(artistId) {
+Songkick.prototype.getSimilarArtists = function(artistId) {
     var endPoint = '/artists/' + artistId + 'similar_artists';
     var url = buildUrl(endPoint, '');
     return makeRequest(url, 'artist');
@@ -131,7 +131,7 @@ SongKick.prototype.getSimilarArtists = function(artistId) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getArtistCalendar = function(artistId, params) {
+Songkick.prototype.getArtistCalendar = function(artistId, params) {
     var endPoint = '/artists/' + artistId + '/calendar';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -150,7 +150,7 @@ SongKick.prototype.getArtistCalendar = function(artistId, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getArtistPastEvents = function(artistId, params) {
+Songkick.prototype.getArtistPastEvents = function(artistId, params) {
     var endPoint = '/artists/' + artistId + '/gigography';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -162,7 +162,7 @@ SongKick.prototype.getArtistPastEvents = function(artistId, params) {
     @username: the username of the user you want to get a tracking of an artist for
     @artistId: the id of the artist you want to get a user's tracking for
 */
-SongKick.prototype.getArtistTracking = function(username, artistId) {
+Songkick.prototype.getArtistTracking = function(username, artistId) {
     var endPoint = '/users/' + username + '/trackings/artist:' + artistId;
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -178,7 +178,7 @@ SongKick.prototype.getArtistTracking = function(username, artistId) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.searchVenues = function(params) {
+Songkick.prototype.searchVenues = function(params) {
     if (!params.query) {
         throw '{query} must be include in the parameters you pass in';
     }
@@ -192,7 +192,7 @@ SongKick.prototype.searchVenues = function(params) {
     Returns a venue given a venueId
     @venueId: the id of a venue you want details for
 */
-SongKick.prototype.getVenue = function(venueId) {
+Songkick.prototype.getVenue = function(venueId) {
     var endPoint = '/venues/' + venueId;
     var url = buildUrl(endPoint, '');
     return makeRequest(url, 'venue');
@@ -207,7 +207,7 @@ SongKick.prototype.getVenue = function(venueId) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getVenueCalendar = function(venueId, params) {
+Songkick.prototype.getVenueCalendar = function(venueId, params) {
     var endPoint = '/venues/' + venueId + '/calendar';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -227,7 +227,7 @@ SongKick.prototype.getVenueCalendar = function(venueId, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.searchLocations = function(params) {
+Songkick.prototype.searchLocations = function(params) {
     if (!(params.query || params.location)) {
         throw '{query} OR {location} must be include in the parameters you pass in';
     }
@@ -246,7 +246,7 @@ SongKick.prototype.searchLocations = function(params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
+Songkick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
     var endPoint = '/metro_areas/' + metroAreaId + '/calendar';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -258,7 +258,7 @@ SongKick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
     @username: the username of the user you want to get a tracking of a metro area for
     @metroAreaId: the id of the metro area you want to get a user's tracking for
 */
-SongKick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
+Songkick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
     var endPoint = '/users/' + username + '/trackings/metro_area:' + metroAreaId;
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -274,7 +274,7 @@ SongKick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getUserCalendar = function(username, params) {
+Songkick.prototype.getUserCalendar = function(username, params) {
     params.reason = 'tracked_artist'
     var endPoint = '/users/' + username + '/calendar';
     var queryString = querystring.stringify(params);
@@ -299,7 +299,7 @@ SongKick.prototype.getUserCalendar = function(username, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getUserEvents = function(username, params) {
+Songkick.prototype.getUserEvents = function(username, params) {
     var endPoint = '/users/' + username + '/events';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -318,7 +318,7 @@ SongKick.prototype.getUserEvents = function(username, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getUserPastEvents = function(username, params) {
+Songkick.prototype.getUserPastEvents = function(username, params) {
     var endPoint = '/users/' + username + '/gigography';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -336,7 +336,7 @@ SongKick.prototype.getUserPastEvents = function(username, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getUserTrackedArtists = function(username, params) {
+Songkick.prototype.getUserTrackedArtists = function(username, params) {
     var endPoint = '/users/' + username + '/artists/tracked';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -354,7 +354,7 @@ SongKick.prototype.getUserTrackedArtists = function(username, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getUserTrackedMetroAreas = function(username, params) {
+Songkick.prototype.getUserTrackedMetroAreas = function(username, params) {
     var endPoint = '/users/' + username + '/metro_areas/tracked';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
@@ -372,11 +372,11 @@ SongKick.prototype.getUserTrackedMetroAreas = function(username, params) {
             @page: offset for paginated results (first page = 1)
             @per_page: number of results for paginated results (max 50)
 */
-SongKick.prototype.getUserMutedArtists = function(username, params) {
+Songkick.prototype.getUserMutedArtists = function(username, params) {
     var endPoint = '/users/' + username + '/artists/muted';
     var queryString = querystring.stringify(params);
     var url = buildUrl(endPoint, queryString);
     return makeRequest(url, 'artist');
 };
 
-module.exports = SongKick
+module.exports = Songkick
