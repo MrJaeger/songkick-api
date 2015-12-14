@@ -13,7 +13,7 @@
         "q": "1.4.1",
         "request": "2.67.0"
     },
-    "liscense": "MIT",
+    "license": "MIT",
     "main": "songkick-api.js",
     "keywords": ["songkick"],
     "engines": {
