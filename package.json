@@ -1,11 +1,19 @@
 {
     "name": "ticketfox-scraper",
     "version": "0.0.1",
-    "repository": {},
+    "author": {
+        "name": "Andrew Jaeger",
+        "email": "mrjaeger00@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MrJaeger/songkick-api.git"
+    },
     "dependencies": {
         "q": "1.4.1",
         "request": "2.67.0"
     },
+    "main": "songkick-api.js",
     "engines": {
         "node": ">=0.10.0"
     }
