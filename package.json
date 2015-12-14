@@ -1,0 +1,12 @@
+{
+    "name": "ticketfox-scraper",
+    "version": "0.0.1",
+    "repository": {},
+    "dependencies": {
+        "q": "1.4.1",
+        "request": "2.67.0"
+    },
+    "engines": {
+        "node": ">=0.10.0"
+    }
+}
