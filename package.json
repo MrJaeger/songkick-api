@@ -15,7 +15,8 @@
   "license": "MIT",
   "main": "index.js",
   "keywords": [
-    "songkick"
+    "songkick",
+    "api"
   ],
   "engines": {
     "node": ">=0.10.0"
