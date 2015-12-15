@@ -28,6 +28,7 @@ function filterParams(params, allowedParams) {
 }
 
 var Songkick = function(apiKey, opts) {
+    opts = opts || {};
     this.apiKey = apiKey;
     this.returnType = '.json';
     if (opts.returnXML) {
