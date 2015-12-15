@@ -2,7 +2,9 @@
 var Q = require('q'),
     querystring = require('querystring'),
     request = require('request'),
-    baseUrl = 'http://api.songkick.com/api/3.0';
+    util = require('util');
+
+var baseUrl = 'http://api.songkick.com/api/3.0';
 
 function makeRequest(url, resultType) {
     var deferred = Q.defer();
@@ -73,7 +75,7 @@ Songkick.prototype.searchEvents = function(params) {
     @eventId: the id of an event you want details for
 */
 Songkick.prototype.getEvent = function(eventId) {
-    var endPoint = '/events/' + eventId;
+    var endPoint = util.format('/events/%s', eventId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'event');
 };
@@ -83,7 +85,7 @@ Songkick.prototype.getEvent = function(eventId) {
     @eventId: the id of an event you want its setlist for
 */
 Songkick.prototype.getEventSetlist = function(eventId) {
-    var endPoint = '/events/' + eventId + '/setlists';
+    var endPoint = util.format('/events/%s/setlists', eventId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'setlist');
 };
@@ -94,7 +96,7 @@ Songkick.prototype.getEventSetlist = function(eventId) {
     @eventId: the id of the event you want to get a user's tracking for
 */
 Songkick.prototype.getEventTracking = function(username, eventId) {
-    var endPoint = '/users/' + username + '/trackings/event:' + eventId;
+    var endPoint = util.format('/users/%s/trackings/event:%s', username, eventId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'tracking');
 };
@@ -123,7 +125,7 @@ Songkick.prototype.searchArtists = function(params) {
     @artistId: the id of an artist you want to find similar artists for
 */
 Songkick.prototype.getSimilarArtists = function(artistId) {
-    var endPoint = '/artists/' + artistId + 'similar_artists';
+    var endPoint = util.format('/artists/%s/similar_artists', artistId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'artist');
 };
@@ -141,7 +143,7 @@ Songkick.prototype.getSimilarArtists = function(artistId) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getArtistCalendar = function(artistId, params) {
-    var endPoint = '/artists/' + artistId + '/calendar';
+    var endPoint = util.format('/artists/%s/calendar', artistId);
     var allowedParams = ['order', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
@@ -160,7 +162,7 @@ Songkick.prototype.getArtistCalendar = function(artistId, params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getArtistPastEvents = function(artistId, params) {
-    var endPoint = '/artists/' + artistId + '/gigography';
+    var endPoint = util.format('/artists/%s/gigography', artistId);
     var allowedParams = ['order', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
@@ -172,7 +174,7 @@ Songkick.prototype.getArtistPastEvents = function(artistId, params) {
     @artistId: the id of the artist you want to get a user's tracking for
 */
 Songkick.prototype.getArtistTracking = function(username, artistId) {
-    var endPoint = '/users/' + username + '/trackings/artist:' + artistId;
+    var endPoint = util.format('/users/%s/trackings/artist:%s', username, artistId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'tracking');
 };
@@ -201,7 +203,7 @@ Songkick.prototype.searchVenues = function(params) {
     @venueId: the id of a venue you want details for
 */
 Songkick.prototype.getVenue = function(venueId) {
-    var endPoint = '/venues/' + venueId;
+    var endPoint = util.format('/venues/%s', venueId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'venue');
 };
@@ -216,7 +218,7 @@ Songkick.prototype.getVenue = function(venueId) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getVenueCalendar = function(venueId, params) {
-    var endPoint = '/venues/' + venueId + '/calendar';
+    var endPoint = util.format('/venues/%s/calendar', venueId);
     var allowedParams = ['page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
@@ -255,7 +257,7 @@ Songkick.prototype.searchLocations = function(params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
-    var endPoint = '/metro_areas/' + metroAreaId + '/calendar';
+    var endPoint = util.format('/metro_areas/%s/calendar', metroAreaId);
     var allowedParams = ['page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
@@ -267,7 +269,7 @@ Songkick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
     @metroAreaId: the id of the metro area you want to get a user's tracking for
 */
 Songkick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
-    var endPoint = '/users/' + username + '/trackings/metro_area:' + metroAreaId;
+    var endPoint = util.format('/users/%s/trackings/metro_area:%s', username, metroAreaId);
     var url = this.buildUrl(endPoint, {});
     return makeRequest(url, 'tracking');
 };
@@ -283,8 +285,8 @@ Songkick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
 */
 Songkick.prototype.getUserCalendar = function(username, params) {
     params.reason = 'tracked_artist';
-    var endPoint = '/users/' + username + '/calendar';
-    var allowedParams = ['page', 'per_page'];
+    var endPoint = util.format('/users/%s/calendar', username);
+    var allowedParams = ['tracked_artist', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'calendarEntry');
 };
@@ -307,7 +309,7 @@ Songkick.prototype.getUserCalendar = function(username, params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getUserEvents = function(username, params) {
-    var endPoint = '/users/' + username + '/events';
+    var endPoint = util.format('/users/%s/events', username);
     var allowedParams = ['attendance', 'created_after', 'order', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
@@ -326,7 +328,7 @@ Songkick.prototype.getUserEvents = function(username, params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getUserPastEvents = function(username, params) {
-    var endPoint = '/users/' + username + '/gigography';
+    var endPoint = util.format('/users/%s/gigography', username);
     var allowedParams = ['order', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
@@ -344,7 +346,7 @@ Songkick.prototype.getUserPastEvents = function(username, params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getUserTrackedArtists = function(username, params) {
-    var endPoint = '/users/' + username + '/artists/tracked';
+    var endPoint = util.format('/users/%s/artists/tracked', username);
     var allowedParams = ['created_after', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'artist');
@@ -362,7 +364,7 @@ Songkick.prototype.getUserTrackedArtists = function(username, params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getUserTrackedMetroAreas = function(username, params) {
-    var endPoint = '/users/' + username + '/metro_areas/tracked';
+    var endPoint = util.format('/users/%s/metro_areas/tracked', username);
     var allowedParams = ['created_after', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'metroArea');
@@ -380,7 +382,7 @@ Songkick.prototype.getUserTrackedMetroAreas = function(username, params) {
             @per_page: number of results for paginated results (max 50)
 */
 Songkick.prototype.getUserMutedArtists = function(username, params) {
-    var endPoint = '/users/' + username + '/artists/muted';
+    var endPoint = util.format('/users/%s/artists/muted', username);
     var allowedParams = ['created_after', 'page', 'per_page'];
     var url = this.buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'artist');
