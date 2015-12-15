@@ -16,6 +16,15 @@ function makeRequest(url, resultType) {
     return deferred.promise;
 }
 
+function filterParams(params, allowedParams) {
+    for (paramName in params) {
+        if (allowedParams.indexOf(paramName) === -1) {
+            delete params[paramName];
+        }
+    }
+    return params;
+}
+
 var Songkick = function(apiKey, opts) {
     this.apiKey = apiKey;
     this.returnType = '.json';
@@ -24,7 +33,8 @@ var Songkick = function(apiKey, opts) {
     }
 };
 
-Songkick.prototype.buildUrl = (endPoint, queryString) {
+Songkick.prototype.buildUrl = (endPoint, params, allowedParams) {
+    var queryString = querystring.stringify(filterParams(params, allowedParams));
     return baseUrl + endPoint + this.returnType + '?' + queryString + '&apikey=' + this.apiKey;
 }
 
@@ -53,8 +63,8 @@ Songkick.prototype.searchEvents = function(params) {
         throw 'If pass in {min_date} OR {max_data} as parameters, you must include both';
     }
     var endPoint = '/events';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['artist_name', 'location', 'min_date', 'max_date', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -64,7 +74,7 @@ Songkick.prototype.searchEvents = function(params) {
 */
 Songkick.prototype.getEvent = function(eventId) {
     var endPoint = '/events/' + eventId;
-    var url = buildUrl(endPoint, '');
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'event');
 };
 
@@ -74,7 +84,7 @@ Songkick.prototype.getEvent = function(eventId) {
 */
 Songkick.prototype.getEventSetlist = function(eventId) {
     var endPoint = '/events/' + eventId + '/setlists';
-    var url = buildUrl(endPoint, '');
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'setlist');
 };
 
@@ -85,8 +95,7 @@ Songkick.prototype.getEventSetlist = function(eventId) {
 */
 Songkick.prototype.getEventTracking = function(username, eventId) {
     var endPoint = '/users/' + username + '/trackings/event:' + eventId;
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'tracking');
 };
 
@@ -104,8 +113,8 @@ Songkick.prototype.searchArtists = function(params) {
         throw '{query} must be include in the parameters you pass in';
     }
     var endPoint = '/search/artists';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['query', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'artist');
 };
 
@@ -115,7 +124,7 @@ Songkick.prototype.searchArtists = function(params) {
 */
 Songkick.prototype.getSimilarArtists = function(artistId) {
     var endPoint = '/artists/' + artistId + 'similar_artists';
-    var url = buildUrl(endPoint, '');
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'artist');
 };
 
@@ -133,8 +142,8 @@ Songkick.prototype.getSimilarArtists = function(artistId) {
 */
 Songkick.prototype.getArtistCalendar = function(artistId, params) {
     var endPoint = '/artists/' + artistId + '/calendar';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['order', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -152,8 +161,8 @@ Songkick.prototype.getArtistCalendar = function(artistId, params) {
 */
 Songkick.prototype.getArtistPastEvents = function(artistId, params) {
     var endPoint = '/artists/' + artistId + '/gigography';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['order', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -164,8 +173,7 @@ Songkick.prototype.getArtistPastEvents = function(artistId, params) {
 */
 Songkick.prototype.getArtistTracking = function(username, artistId) {
     var endPoint = '/users/' + username + '/trackings/artist:' + artistId;
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'tracking');
 };
 
@@ -183,8 +191,8 @@ Songkick.prototype.searchVenues = function(params) {
         throw '{query} must be include in the parameters you pass in';
     }
     var endPoint = '/search/venues';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['query', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'venue');
 };
 
@@ -194,7 +202,7 @@ Songkick.prototype.searchVenues = function(params) {
 */
 Songkick.prototype.getVenue = function(venueId) {
     var endPoint = '/venues/' + venueId;
-    var url = buildUrl(endPoint, '');
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'venue');
 };
 
@@ -209,8 +217,8 @@ Songkick.prototype.getVenue = function(venueId) {
 */
 Songkick.prototype.getVenueCalendar = function(venueId, params) {
     var endPoint = '/venues/' + venueId + '/calendar';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -232,8 +240,8 @@ Songkick.prototype.searchLocations = function(params) {
         throw '{query} OR {location} must be include in the parameters you pass in';
     }
     var endPoint = '/search/locations';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['query', 'location', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'location');
 };
 
@@ -248,8 +256,8 @@ Songkick.prototype.searchLocations = function(params) {
 */
 Songkick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
     var endPoint = '/metro_areas/' + metroAreaId + '/calendar';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -260,8 +268,7 @@ Songkick.prototype.getMetroAreaCalendar = function(metroAreaId, params) {
 */
 Songkick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
     var endPoint = '/users/' + username + '/trackings/metro_area:' + metroAreaId;
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var url = buildUrl(endPoint, {});
     return makeRequest(url, 'tracking');
 };
 
@@ -277,8 +284,8 @@ Songkick.prototype.getMetroAreaTracking = function(username, metroAreaId) {
 Songkick.prototype.getUserCalendar = function(username, params) {
     params.reason = 'tracked_artist'
     var endPoint = '/users/' + username + '/calendar';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'calendarEntry');
 };
 
@@ -301,8 +308,8 @@ Songkick.prototype.getUserCalendar = function(username, params) {
 */
 Songkick.prototype.getUserEvents = function(username, params) {
     var endPoint = '/users/' + username + '/events';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['attendance', 'created_after', 'order', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -320,8 +327,8 @@ Songkick.prototype.getUserEvents = function(username, params) {
 */
 Songkick.prototype.getUserPastEvents = function(username, params) {
     var endPoint = '/users/' + username + '/gigography';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['order', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'event');
 };
 
@@ -338,8 +345,8 @@ Songkick.prototype.getUserPastEvents = function(username, params) {
 */
 Songkick.prototype.getUserTrackedArtists = function(username, params) {
     var endPoint = '/users/' + username + '/artists/tracked';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['created_after', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'artist');
 };
 
@@ -356,8 +363,8 @@ Songkick.prototype.getUserTrackedArtists = function(username, params) {
 */
 Songkick.prototype.getUserTrackedMetroAreas = function(username, params) {
     var endPoint = '/users/' + username + '/metro_areas/tracked';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['created_after', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'metroArea');
 };
 
@@ -374,8 +381,8 @@ Songkick.prototype.getUserTrackedMetroAreas = function(username, params) {
 */
 Songkick.prototype.getUserMutedArtists = function(username, params) {
     var endPoint = '/users/' + username + '/artists/muted';
-    var queryString = querystring.stringify(params);
-    var url = buildUrl(endPoint, queryString);
+    var allowedParams = ['created_after', 'page', 'per_page'];
+    var url = buildUrl(endPoint, params, allowedParams);
     return makeRequest(url, 'artist');
 };
 
