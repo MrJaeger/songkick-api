@@ -12,6 +12,7 @@ function makeRequest(url, resultType) {
         body = JSON.parse(body);
         if (body.resultsPage.status === 'error') {
             deferred.reject(body.resultsPage.error);
+            return;
         }
         deferred.resolve(body.resultsPage.results[resultType]);
     });
