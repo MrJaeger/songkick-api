@@ -33,3 +33,5 @@ You can then make calls to endpoints and create promise chains to do whatever yo
         .catch(function(error) {
             console.log(error);
         })
+
+More examples can be found in the [examples](https://github.com/MrJaeger/songkick-api/tree/master/examples) folder
