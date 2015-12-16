@@ -10,3 +10,26 @@ You can use [npm](https://npmjs.org) to install this module:
 If you prefer to use the source form github, clone the repo:
 
     git clone https://github.com/MrJaeger/songkick-api.git
+    
+## Usage
+
+Instantiate a client to make API calls with
+
+    var Songkick = require('songkick-api');
+    var client = new Songkick('<YOUR API KEY GOES HERE>');
+    
+You can then make calls to endpoints and create promise chains to do whatever you'd like!
+
+    client
+        .searchEvents({
+            'artist_name': 'Queen',
+            'min_date': '2015-12-01',
+            'max_date': '2015-12-08',
+            'page': 2
+        })
+        .then(function(events) {
+            console.log(events);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
